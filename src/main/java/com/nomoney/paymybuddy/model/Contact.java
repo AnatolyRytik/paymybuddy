@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "connections")
-public class Connection extends AbstractBaseEntity {
+public class Contact extends AbstractBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
