@@ -21,9 +21,11 @@ create unique index users_unique_email_idx on users (email);
 
 create TABLE IF NOT EXISTS connections
 (
-     user_email_address      VARCHAR    REFERENCES users (email),
-     friend_email_address    VARCHAR    REFERENCES users (email),
-     CONSTRAINT connections_pkey PRIMARY KEY (user_email_address, friend_email_address)
+     id                      INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
+     user_id                 INTEGER    NOT NULL,
+     friend_id               INTEGER    NOT NULL,
+     FOREIGN KEY (user_id) REFERENCES users(id) ON delete CASCADE,
+	 FOREIGN KEY (friend_id) REFERENCES users(id) ON delete CASCADE
 );
 create TABLE IF NOT EXISTS accounts
 (
@@ -59,7 +61,7 @@ insert into transactions (user_email, amount, email_recipient)
 values ('george@gmail.com', 100, 'user@gmail.com'),
        ('george@gmail.com', 200, 'admin@gmail.com');
 
-insert into connections (user_email_address, friend_email_address)
-VALUES ('user@gmail.com','admin@gmail.com'),
-       ('user@gmail.com','george@gmail.com'),
-       ('george@gmail.com','admin@gmail.com');
+insert into connections (user_id, friend_id)
+VALUES (100000,100001),
+       (100000,100002),
+       (100001,100002);
