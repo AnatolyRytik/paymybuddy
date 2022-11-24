@@ -12,7 +12,8 @@ create sequence global_seq start with 100000;
 create TABLE IF NOT EXISTS users
 (
     id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name             VARCHAR                           NOT NULL,
+    firstName        VARCHAR                           NOT NULL,
+    lastName         VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL
