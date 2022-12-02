@@ -1,16 +1,13 @@
 package com.nomoney.paymybuddy.service;
 
-import com.nomoney.paymybuddy.dto.ContactFormDto;
 import com.nomoney.paymybuddy.dto.UserRegistrationDto;
-import com.nomoney.paymybuddy.model.Contact;
 import com.nomoney.paymybuddy.model.User;
 import com.nomoney.paymybuddy.repository.ContactRepository;
 import com.nomoney.paymybuddy.repository.UserRepository;
-import com.nomoney.paymybuddy.util.exception.NotFoundException;
+import com.nomoney.paymybuddy.util.exception.DataAlreadyExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,29 +22,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(UserRegistrationDto userRegistrationDto) {
+        Optional<User> existingUser = userRepository.findByEmail(userRegistrationDto.getEmail());
+        if (existingUser.isPresent()) {
+            throw new DataAlreadyExistException("User with email already exists");
+        }
         User user = new User(userRegistrationDto);
         return userRepository.save(user);
     }
 
     @Override
-    public User addFriend(ContactFormDto contactFormDto) {
-        Optional<User> user = userRepository.findByEmail(contactFormDto.getUserEmail());
-        Optional<User> friend = userRepository.findByEmail(contactFormDto.getFriendEmail());
-
-        if (user.isPresent() && friend.isPresent()) {
-            Contact contact = new Contact(user.get(), friend.get());
-            user.get().getRelations().add(contact);
-        } else throw new NotFoundException("User not found");
-        return userRepository.save(user.get());
-    }
-
-    @Override
-    public Set<Contact> contacts(String userEmail) {
-        return contactRepository.findAllByUserEmail(userEmail);
-    }
-
-    @Override
-    public Boolean deleteContact(String email) {
-        return null;
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
