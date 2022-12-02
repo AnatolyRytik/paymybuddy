@@ -10,9 +10,9 @@ import java.util.Set;
 public interface UserService {
     User saveUser(UserRegistrationDto userRegistrationDto);
 
-    User addFriend(ContactFormDto contactFormDto);
+    ContactFormDto addFriend(ContactFormDto contactFormDto);
 
-    Set<Contact> contacts(String userEmail);
+    Set<Contact> getContacts(String userEmail);
 
     Boolean deleteContact(String email);
 }
