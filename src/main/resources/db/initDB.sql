@@ -1,19 +1,19 @@
 create DATABASE payme;
 \c payme;
 
-/*drop table IF EXISTS accounts;
+drop table IF EXISTS accounts;
 drop table IF EXISTS transactions;
 drop table IF EXISTS connections;
 drop table IF EXISTS users CASCADE;
-drop sequence IF EXISTS global_seq;*/
+drop sequence IF EXISTS global_seq;
 
 create sequence global_seq start with 100000;
 
 create TABLE IF NOT EXISTS users
 (
     id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    firstName        VARCHAR                           NOT NULL,
-    lastName         VARCHAR                           NOT NULL,
+    firstname        VARCHAR                           NOT NULL,
+    lastname         VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL
@@ -47,22 +47,22 @@ create TABLE IF NOT EXISTS transactions
 );
 
 
-insert into users (name, email, password)
-values ('User', 'user@gmail.com', 'password'),
-       ('Admin', 'admin@gmail.com', 'admin'),
-       ('George', 'george@gmail.com', 'george');
+insert into users (firstName, lastName, email, password)
+values ('Thomas', 'Toto', 'thomas@gmail.com', 'password'),
+       ('Bernard', 'Tata', 'bernard@gmail.com', 'admin'),
+       ('George', 'Titi', 'george@gmail.com', 'george');
 
 
 insert into accounts (user_email, balance)
-values ('user@gmail.com',  1000000),
-       ('admin@gmail.com',  2200000),
+values ('thomas@gmail.com',  1000000),
+       ('bernard@gmail.com',  2200000),
        ('george@gmail.com',  9900500);
 
 insert into transactions (user_email, amount, email_recipient)
-values ('george@gmail.com', 100, 'user@gmail.com'),
-       ('george@gmail.com', 200, 'admin@gmail.com');
+values ('george@gmail.com', 100, 'thomas@gmail.com'),
+       ('george@gmail.com', 200, 'bernard@gmail.com');
 
 insert into connections (user_id, friend_id)
-VALUES (100000,100001),
+values (100000,100001),
        (100000,100002),
        (100001,100002);
