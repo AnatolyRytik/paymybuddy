@@ -31,6 +31,7 @@ public class User extends AbstractBaseEntity {
     @Column(name = "email")
     private String email;
 
+    @NotBlank
     @Column(name = "password")
     private String password;
 
