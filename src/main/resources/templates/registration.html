@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}">
+    <meta charset="utf-8" />
+    <title>Inscription</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css" th:href="@{/css/home.css}"/>
+</head>
+<body>
+<center>
+    <div class="login border border-dark rounded">
+        <div class="main">
+            </br>
+            <div class="logo">Pay My Buddy</div>
+            <br/>
+            <br/>
+            <legend>Registration</legend>
+            <p>You can register via this form.</p>
+        </div>
+        <div th:if="${errorMessage}" th:utext="${errorMessage}"
+             style=" color:red; font-style:italic ; font-weight: bold; ">...
+        </div>
+        <div class="registrationBorder">
+            <form th:action="@{/registration}" method="post">
+                <fieldset>
+                    <div class="put">
+
+                        <input type="text" class="form-control" id="firstName" placeholder="First name" name="firstName"
+                               th:value="${firstName}"
+                               size="20" maxlength="20" minlength="2" required="true"/>
+
+                        <input type="text" class="form-control" id="lastName" placeholder="Last name" name="lastName"
+                               th:value="${lastName}"
+                               size="20" maxlength="20" minlength="2" required="true"/>
+
+
+                        <input type="text" class="form-control" id="email" placeholder="Email" name="email"
+                               th:value="${email}" size="20"
+                               maxlength="50" minlength="5" required="true"/>
+
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password"
+                               th:value="${password}"
+                               size="60" maxlength="60" minlength="10" required="true"/>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Register</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</center>
+</body>
+</html>
