@@ -1,8 +1,9 @@
 package com.nomoney.paymybuddy.service;
 
 import com.nomoney.paymybuddy.dto.UserRegistrationDto;
+import com.nomoney.paymybuddy.model.Account;
 import com.nomoney.paymybuddy.model.User;
-import com.nomoney.paymybuddy.repository.ContactRepository;
+import com.nomoney.paymybuddy.repository.AccountRepository;
 import com.nomoney.paymybuddy.repository.UserRepository;
 import com.nomoney.paymybuddy.util.exception.DataAlreadyExistException;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final ContactRepository contactRepository;
+    private final AccountRepository accountRepository;
 
-    public UserServiceImpl(UserRepository userRepository, ContactRepository contactRepository) {
+    public UserServiceImpl(UserRepository userRepository, AccountRepository accountRepository) {
         this.userRepository = userRepository;
-        this.contactRepository = contactRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService {
             throw new DataAlreadyExistException("User with email already exists");
         }
         User user = new User(userRegistrationDto);
+        Account account = new Account(user.getEmail(), 0.0);
+        accountRepository.save(account);
         return userRepository.save(user);
     }
 
