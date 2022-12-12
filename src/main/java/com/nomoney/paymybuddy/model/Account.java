@@ -20,5 +20,5 @@ public class Account extends AbstractBaseEntity {
 
     @NotBlank
     @Column(name = "balance", nullable = false)
-    private int balance;
+    private double balance;
 }
