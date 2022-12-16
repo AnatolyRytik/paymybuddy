@@ -16,13 +16,13 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "accounts")
 @NoArgsConstructor
-public class Account extends AbstractBaseEntity {
+public class BankAccount extends AbstractBaseEntity {
 
     @Email
     @JoinColumn(name = "user_email", nullable = false)
     private String userEmail;
 
     @NotBlank
-    @Column(name = "balance", nullable = false)
-    private double balance;
+    @Column(name = "iban", nullable = false)
+    private String iban;
 }

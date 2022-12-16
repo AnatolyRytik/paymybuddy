@@ -16,6 +16,7 @@ create TABLE IF NOT EXISTS users
     lastname         VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
+    balance          NUMERIC(20,2)                     NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL
 );
 create unique index users_unique_email_idx on users (email);
@@ -32,7 +33,7 @@ create TABLE IF NOT EXISTS accounts
 (
     id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     user_email  VARCHAR                                  NOT NULL,
-    balance     NUMERIC(20,2)                            NOT NULL,
+    iban        VARCHAR                                  NOT NULL,
     FOREIGN KEY (user_email) REFERENCES users (email) ON delete CASCADE
 );
 

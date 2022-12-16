@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TransactionService {
 
-    Transaction create(Transaction transaction);
+    Transaction createInternalTransaction(Transaction transaction);
 
     List<Transaction> getAllTransactionsByUser(String email);
 }

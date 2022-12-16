@@ -35,6 +35,10 @@ public class User extends AbstractBaseEntity {
     @Column(name = "password")
     private String password;
 
+    @NotBlank
+    @Column(name = "balance")
+    private double balance;
+
     @NotNull
     @Column(name = "registered")
     private Date registered = new Date();
@@ -44,6 +48,7 @@ public class User extends AbstractBaseEntity {
         this.lastName = userRegistrationDto.getLastname();
         this.email = userRegistrationDto.getPassword();
         this.password = userRegistrationDto.getPassword();
+        this.balance = 0.0;
         this.registered = new Date();
     }
 
