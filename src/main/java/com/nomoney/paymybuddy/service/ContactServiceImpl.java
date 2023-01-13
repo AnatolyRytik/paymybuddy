@@ -43,8 +43,12 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Boolean deleteContact(String email) {
-        return null;
+    public Boolean deleteContact(Long id) {
+        if (contactRepository.existsById(id)) {
+            contactRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 }
