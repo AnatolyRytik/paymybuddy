@@ -10,8 +10,6 @@ public interface TransactionService {
 
     Transaction createInternalTransaction(InternalTransactionDto internalTransactionDto);
 
-    Transaction popUpBalance(ExternalTransactionDto externalTransactionDto);
-
     Transaction withdrawToBankAccount(ExternalTransactionDto externalTransactionDto);
 
     List<Transaction> getAllTransactionsByUser(String email);
