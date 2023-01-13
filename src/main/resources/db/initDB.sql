@@ -1,7 +1,6 @@
 create DATABASE payme;
 \c payme;
 
-drop table IF EXISTS accounts;
 drop table IF EXISTS transactions;
 drop table IF EXISTS connections;
 drop table IF EXISTS users CASCADE;
@@ -16,7 +15,7 @@ create TABLE IF NOT EXISTS users
     lastname         VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
-    balance          NUMERIC(20,2)                     NOT NULL,
+    balance          NUMERIC(20,2)       DEFAULT 0.00  NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL
 );
 create unique index users_unique_email_idx on users (email);
@@ -29,13 +28,6 @@ create TABLE IF NOT EXISTS connections
      FOREIGN KEY (user_id) REFERENCES users(id) ON delete CASCADE,
 	 FOREIGN KEY (friend_id) REFERENCES users(id) ON delete CASCADE
 );
-create TABLE IF NOT EXISTS accounts
-(
-    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    user_email  VARCHAR                                  NOT NULL,
-    iban        VARCHAR                                  NOT NULL,
-    FOREIGN KEY (user_email) REFERENCES users (email) ON delete CASCADE
-);
 
 create TABLE IF NOT EXISTS transactions
 (
@@ -43,7 +35,8 @@ create TABLE IF NOT EXISTS transactions
     user_email          VARCHAR                                  NOT NULL,
     date_time           TIMESTAMP                  DEFAULT now() NOT NULL,
     amount              NUMERIC(10,2)                            NOT NULL,
-    email_recipient     VARCHAR                                  NOT NULL,
+    userIban            VARCHAR                                  ,
+    email_recipient     VARCHAR                                  ,
     FOREIGN KEY (user_email) REFERENCES users (email) ON delete CASCADE
 );
 
@@ -52,12 +45,6 @@ insert into users (firstName, lastName, email, password)
 values ('Thomas', 'Toto', 'thomas@gmail.com', 'password'),
        ('Bernard', 'Tata', 'bernard@gmail.com', 'admin'),
        ('George', 'Titi', 'george@gmail.com', 'george');
-
-
-insert into accounts (user_email, balance)
-values ('thomas@gmail.com',  1000000),
-       ('bernard@gmail.com',  2200000),
-       ('george@gmail.com',  9900500);
 
 insert into transactions (user_email, amount, email_recipient)
 values ('george@gmail.com', 100, 'thomas@gmail.com'),
