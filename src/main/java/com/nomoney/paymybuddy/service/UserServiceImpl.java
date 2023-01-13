@@ -4,8 +4,12 @@ import com.nomoney.paymybuddy.dto.UserRegistrationDto;
 import com.nomoney.paymybuddy.model.User;
 import com.nomoney.paymybuddy.repository.UserRepository;
 import com.nomoney.paymybuddy.util.exception.DataAlreadyExistException;
+import com.nomoney.paymybuddy.util.exception.NotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -29,7 +33,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Bad credentials"));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 }
