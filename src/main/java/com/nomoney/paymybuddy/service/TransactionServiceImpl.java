@@ -4,7 +4,6 @@ import com.nomoney.paymybuddy.dto.ExternalTransactionDto;
 import com.nomoney.paymybuddy.dto.InternalTransactionDto;
 import com.nomoney.paymybuddy.model.Transaction;
 import com.nomoney.paymybuddy.model.User;
-import com.nomoney.paymybuddy.repository.AccountRepository;
 import com.nomoney.paymybuddy.repository.TransactionRepository;
 import com.nomoney.paymybuddy.repository.UserRepository;
 import com.nomoney.paymybuddy.util.exception.NotEnoughMoneyException;
@@ -19,12 +18,10 @@ import static com.nomoney.paymybuddy.constant.Constant.FEE;
 @Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
-    private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountRepository accountRepository, UserRepository userRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, UserRepository userRepository) {
         this.transactionRepository = transactionRepository;
-        this.accountRepository = accountRepository;
         this.userRepository = userRepository;
     }
 
@@ -50,21 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction popUpBalance(ExternalTransactionDto externalTransactionDto) {
-        double amount = externalTransactionDto.getAmount();
-
-        User user = userRepository.findByEmail(externalTransactionDto.getUserEmail())
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-        Transaction transaction = new Transaction(externalTransactionDto);
-
-        user.setBalance(user.getBalance() + amount);
-        userRepository.save(user);
-        return transactionRepository.save(transaction);
-
-    }
-
-    @Override
+    @Transactional
     public Transaction withdrawToBankAccount(ExternalTransactionDto externalTransactionDto) {
         double amount = externalTransactionDto.getAmount();
 
