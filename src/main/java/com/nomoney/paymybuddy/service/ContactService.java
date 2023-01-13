@@ -11,5 +11,5 @@ public interface ContactService {
 
     List<Contact> getContacts(String userEmail);
 
-    Boolean deleteContact(String email);
+    Boolean deleteContact(Long id);
 }
