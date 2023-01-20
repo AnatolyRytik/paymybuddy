@@ -15,8 +15,8 @@ create TABLE IF NOT EXISTS users
     lastname         VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
-    balance          NUMERIC(20,2)       DEFAULT 0.00  NOT NULL,
-    registered       TIMESTAMP           DEFAULT now() NOT NULL
+    balance          NUMERIC(20,2)               DEFAULT 0.00  ,
+    registered       TIMESTAMP                   DEFAULT now()
 );
 create unique index users_unique_email_idx on users (email);
 
@@ -42,9 +42,9 @@ create TABLE IF NOT EXISTS transactions
 
 
 insert into users (firstName, lastName, email, password)
-values ('Thomas', 'Toto', 'thomas@gmail.com', 'password'),
-       ('Bernard', 'Tata', 'bernard@gmail.com', 'admin'),
-       ('George', 'Titi', 'george@gmail.com', 'george');
+values ('Thomas', 'Toto', 'thomas@gmail.com', '$2a$10$lr1QLlbssfqupUpJSCx.2up09FLJ372DesaZdwyn2QJ8s4suIwtxe'),
+       ('Bernard', 'Tata', 'bernard@gmail.com', '$2a$10$qIoAE2PvpjJZYhXKUuR48uXKxhIbVQGGTfinwtz2gsLuAUO3V23ny'),
+       ('George', 'Titi', 'george@gmail.com', '$2a$10$tTzSRYrlzgPJEIurP/SY9O4L5E2vniyjsyUT/iIq6OJXITffPcLN2');
 
 insert into transactions (user_email, amount, email_recipient)
 values ('george@gmail.com', 100, 'thomas@gmail.com'),

@@ -3,14 +3,13 @@ package com.nomoney.paymybuddy.model;
 import com.nomoney.paymybuddy.dto.UserRegistrationDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -19,35 +18,29 @@ import java.util.Date;
 @Table(name = "users")
 public class User extends AbstractBaseEntity {
 
-    @NotBlank
     @Column(name = "firstname")
-    protected String firstName;
+    protected String firstname;
 
-    @NotBlank
     @Column(name = "lastname")
-    protected String lastName;
+    protected String lastname;
 
-    @Email
     @Column(name = "email")
     private String email;
 
-    @NotBlank
     @Column(name = "password")
     private String password;
 
-    @NotBlank
     @Column(name = "balance")
     private double balance;
 
-    @NotNull
     @Column(name = "registered")
     private Date registered = new Date();
 
     public User(UserRegistrationDto userRegistrationDto) {
-        this.firstName = userRegistrationDto.getFirstname();
-        this.lastName = userRegistrationDto.getLastname();
-        this.email = userRegistrationDto.getPassword();
-        this.password = userRegistrationDto.getPassword();
+        this.firstname = userRegistrationDto.getFirstname();
+        this.lastname = userRegistrationDto.getLastname();
+        this.email = userRegistrationDto.getEmail();
+        this.password =  userRegistrationDto.getPassword();
         this.balance = 0.0;
         this.registered = new Date();
     }
