@@ -1,6 +1,7 @@
 package com.nomoney.paymybuddy.model;
 
 import com.nomoney.paymybuddy.dto.UserRegistrationDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
 @Table(name = "users")

@@ -10,7 +10,7 @@ public interface TransactionService {
 
     Transaction createInternalTransaction(InternalTransactionDto internalTransactionDto);
 
-    Transaction withdrawToBankAccount(ExternalTransactionDto externalTransactionDto);
+    Transaction setMoneyAvailable(ExternalTransactionDto externalTransactionDto);
 
     List<Transaction> getAllTransactionsByUser(String email);
 }
