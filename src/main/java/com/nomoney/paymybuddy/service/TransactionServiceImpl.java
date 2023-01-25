@@ -8,6 +8,7 @@ import com.nomoney.paymybuddy.repository.TransactionRepository;
 import com.nomoney.paymybuddy.repository.UserRepository;
 import com.nomoney.paymybuddy.util.exception.NotEnoughMoneyException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
+import com.nomoney.paymybuddy.util.exception.OperationNotAllowedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,19 +49,31 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Transaction withdrawToBankAccount(ExternalTransactionDto externalTransactionDto) {
-        double amount = externalTransactionDto.getAmount();
-
+    public Transaction setMoneyAvailable(ExternalTransactionDto externalTransactionDto) {
         User user = userRepository.findByEmail(externalTransactionDto.getUserEmail())
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         Transaction transaction = new Transaction(externalTransactionDto);
 
+        if(externalTransactionDto.getAmountToAdd()>0.0){
+            return addMoney(user,externalTransactionDto.getAmountToAdd(),transaction);
+        }else if(externalTransactionDto.getAmountToWithdraw()>0.0){
+            return withdrawMoney(user,externalTransactionDto.getAmountToWithdraw(),transaction);
+        } else throw new OperationNotAllowedException("This operation is not allowed");
+    }
+
+    private Transaction withdrawMoney (User user, double amount, Transaction transaction){
         if (user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
             userRepository.save(user);
             return transactionRepository.save(transaction);
         } else throw new NotEnoughMoneyException("Not enough money");
+    }
+
+    private Transaction addMoney (User user, double amount, Transaction transaction){
+            user.setBalance(user.getBalance() + amount);
+            userRepository.save(user);
+            return transactionRepository.save(transaction);
     }
 
 
