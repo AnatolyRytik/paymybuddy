@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     public User saveUser(UserRegistrationDto userRegistrationDto) {
         Optional<User> existingUser = userRepository.findByEmail(userRegistrationDto.getEmail());
         if (existingUser.isPresent()) {
-            throw new DataAlreadyExistException("User with email already exists");
+            throw new DataAlreadyExistException("User with such email already exists");
         }
         User user = new User(userRegistrationDto);
         return userRepository.save(user);

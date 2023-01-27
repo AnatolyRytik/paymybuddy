@@ -6,6 +6,7 @@ import com.nomoney.paymybuddy.service.TransactionService;
 import com.nomoney.paymybuddy.service.UserService;
 import com.nomoney.paymybuddy.util.exception.NotEnoughMoneyException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
+import com.nomoney.paymybuddy.util.exception.OperationNotAllowedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -42,10 +43,10 @@ public class InternalTransactionController {
 
     @PostMapping("/internalBalanceOperation")
     public String createInternalTransaction(@ModelAttribute InternalTransactionDto internalTransactionDto, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
-        internalTransactionDto.setUserEmail(userDetails.getUsername());
         try {
+            internalTransactionDto.setUserEmail(userDetails.getUsername());
             transactionService.createInternalTransaction(internalTransactionDto);
-        } catch (NotFoundException | NotEnoughMoneyException e) {
+        } catch (NotFoundException | OperationNotAllowedException | NotEnoughMoneyException e) {
             redirectAttributes.addFlashAttribute("errors", List.of(e.getMessage()));
         }
         return "redirect:/internalTransaction";

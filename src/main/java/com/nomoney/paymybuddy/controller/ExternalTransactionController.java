@@ -5,6 +5,7 @@ import com.nomoney.paymybuddy.service.TransactionService;
 import com.nomoney.paymybuddy.service.UserService;
 import com.nomoney.paymybuddy.util.exception.NotEnoughMoneyException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
+import com.nomoney.paymybuddy.util.exception.OperationNotAllowedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -37,14 +38,13 @@ public class ExternalTransactionController {
     }
 
     @PostMapping("/externalBalanceOperation")
-    public String withdrawToBankAccount(@ModelAttribute ExternalTransactionDto externalTransactionDto, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+    public String addFromOrWithdrawToBankAccount(@ModelAttribute ExternalTransactionDto externalTransactionDto, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
         try {
             externalTransactionDto.setUserEmail(userDetails.getUsername());
             transactionService.setMoneyAvailable(externalTransactionDto);
-        } catch (NotFoundException | NotEnoughMoneyException e) {
+        } catch (NotFoundException | OperationNotAllowedException | NotEnoughMoneyException e) {
             redirectAttributes.addFlashAttribute("errors", List.of(e.getMessage()));
         }
         return "redirect:/externalTransaction";
-
     }
 }
