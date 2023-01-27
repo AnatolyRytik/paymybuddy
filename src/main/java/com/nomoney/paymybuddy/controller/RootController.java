@@ -5,6 +5,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * RootController class is a Spring MVC controller responsible for handling user login requests.
+ */
 @Controller
 public class RootController {
 
@@ -16,6 +19,11 @@ public class RootController {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Handles GET requests for the "/login" path and returns the login view.
+     *
+     * @return the login view.
+     */
     @GetMapping("/login")
     public String login() {
         return "login";
