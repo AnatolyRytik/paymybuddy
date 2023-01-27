@@ -5,6 +5,7 @@ import com.nomoney.paymybuddy.model.User;
 import com.nomoney.paymybuddy.repository.UserRepository;
 import com.nomoney.paymybuddy.util.exception.DataAlreadyExistException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Optional;
  * UserServiceImpl class is an implementation of the UserService interface.
  * It provides methods for saving a user, loading a user by email, and getting user by email.
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,9 +39,11 @@ public class UserServiceImpl implements UserService {
     public User saveUser(UserRegistrationDto userRegistrationDto) {
         Optional<User> existingUser = userRepository.findByEmail(userRegistrationDto.getEmail());
         if (existingUser.isPresent()) {
+            log.error("User with such email already exists");
             throw new DataAlreadyExistException("User with such email already exists");
         }
         User user = new User(userRegistrationDto);
+        log.debug("Saving user with email: {}", userRegistrationDto.getEmail());
         return userRepository.save(user);
     }
 

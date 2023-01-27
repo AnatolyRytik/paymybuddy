@@ -4,6 +4,7 @@ import com.nomoney.paymybuddy.dto.UserRegistrationDto;
 import com.nomoney.paymybuddy.service.UserService;
 import com.nomoney.paymybuddy.util.exception.DataAlreadyExistException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.util.List;
  * <p>
  * It uses UserService and PasswordEncoder to register the user.
  */
+@Slf4j
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
@@ -38,6 +40,7 @@ public class RegistrationController {
      */
     @GetMapping
     public String showRegistrationForm() {
+        log.debug("GET Request to /registration endpoint");
         return "registration";
     }
 
@@ -60,10 +63,12 @@ public class RegistrationController {
      */
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto, RedirectAttributes redirectAttributes) {
+        log.debug("POST Request to /registration endpoint");
         try {
             registrationDto.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
             userService.saveUser(registrationDto);
         } catch (NotFoundException | DataAlreadyExistException e) {
+            log.error("Error while registering user: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("errors", List.of(e.getMessage()));
         }
         return "redirect:/registration";

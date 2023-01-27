@@ -7,6 +7,7 @@ import com.nomoney.paymybuddy.service.UserService;
 import com.nomoney.paymybuddy.util.exception.NotEnoughMoneyException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
 import com.nomoney.paymybuddy.util.exception.OperationNotAllowedException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import java.util.List;
  * <p>
  * It uses the TransactionService, ContactService and UserService classes to handle logic related to transactions and users.
  */
+@Slf4j
 @Controller
 public class InternalTransactionController {
 
@@ -46,6 +48,7 @@ public class InternalTransactionController {
      */
     @GetMapping("/internalTransaction")
     public String internalTransactionPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        log.debug("User {} is accessing internalTransactionPage", userDetails.getUsername());
         model.addAttribute("transactions", transactionService.getAllTransactionsByUser(userDetails.getUsername()));
         model.addAttribute("internalTransaction", new InternalTransactionDto());
         model.addAttribute("contacts", contactService.getContacts(userDetails.getUsername()));
@@ -65,10 +68,12 @@ public class InternalTransactionController {
      */
     @PostMapping("/internalBalanceOperation")
     public String createInternalTransaction(@ModelAttribute InternalTransactionDto internalTransactionDto, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+        log.debug("User {} is attempting to make an internal transaction", userDetails.getUsername());
         try {
             internalTransactionDto.setUserEmail(userDetails.getUsername());
             transactionService.createInternalTransaction(internalTransactionDto);
         } catch (NotFoundException | OperationNotAllowedException | NotEnoughMoneyException e) {
+            log.error("An error occurred while trying to perform an internal transaction: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("errors", List.of(e.getMessage()));
         }
         return "redirect:/internalTransaction";
