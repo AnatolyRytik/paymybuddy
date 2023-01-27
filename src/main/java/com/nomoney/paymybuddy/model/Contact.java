@@ -9,6 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * The Contact class represents a contact between two users.
+ * It is a JPA Entity that maps to the 'connections' table in the database.
+ */
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor

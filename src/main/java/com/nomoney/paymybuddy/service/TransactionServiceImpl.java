@@ -16,6 +16,11 @@ import java.util.List;
 
 import static com.nomoney.paymybuddy.constant.Constant.FEE;
 
+/**
+ * This class is the implementation of the {@link TransactionService} interface.
+ * The class uses {@link TransactionRepository} and {@link UserRepository} to
+ * interact with the database and perform operations related to transactions.
+ */
 @Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
@@ -26,6 +31,15 @@ public class TransactionServiceImpl implements TransactionService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Creates an internal transaction between two users.
+     *
+     * @param internalTransactionDto {@link InternalTransactionDto} containing details of the transaction.
+     * @return {@link Transaction} object representing the created transaction.
+     * @throws NotFoundException       if user or recipient account is
+     *                                 not found.
+     * @throws NotEnoughMoneyException if the user does not have enough money to complete the transaction.
+     */
     @Transactional
     public Transaction createInternalTransaction(InternalTransactionDto internalTransactionDto) {
         double amount = internalTransactionDto.getAmount();
@@ -47,6 +61,15 @@ public class TransactionServiceImpl implements TransactionService {
         } else throw new NotEnoughMoneyException("Not enough money");
     }
 
+    /**
+     * Add or withdraw money from a user's account.
+     *
+     * @param externalTransactionDto {@link ExternalTransactionDto} containing details of the transaction.
+     * @return {@link Transaction} object representing the created transaction.
+     * @throws NotFoundException            if user is not found.
+     * @throws OperationNotAllowedException if both amountToAdd and amountToWithdraw are greater than 0.
+     * @throws NotEnoughMoneyException      if user does not have enough money to complete the withdraw transaction.
+     */
     @Override
     @Transactional
     public Transaction setMoneyAvailable(ExternalTransactionDto externalTransactionDto) {
@@ -64,6 +87,15 @@ public class TransactionServiceImpl implements TransactionService {
         } else throw new OperationNotAllowedException("This operation is not allowed");
     }
 
+    /**
+     * Withdraws money from a user's account.
+     *
+     * @param user        {@link User} object representing the user.
+     * @param amount      amount of money to withdraw.
+     * @param transaction {@link Transaction} object representing the created transaction.
+     * @return {@link Transaction} object representing the created transaction.
+     * @throws NotEnoughMoneyException if user does not have enough money to complete the withdraw transaction.
+     */
     private Transaction withdrawMoney(User user, double amount, Transaction transaction) {
         if (user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
@@ -72,13 +104,26 @@ public class TransactionServiceImpl implements TransactionService {
         } else throw new NotEnoughMoneyException("Not enough money");
     }
 
+    /**
+     * Method to add money to a user's account and create a corresponding transaction.
+     *
+     * @param user        the user whose account needs to be updated
+     * @param amount      the amount of money to be added
+     * @param transaction the transaction object to be saved
+     * @return the saved transaction
+     */
     private Transaction addMoney(User user, double amount, Transaction transaction) {
         user.setBalance(user.getBalance() + amount);
         userRepository.save(user);
         return transactionRepository.save(transaction);
     }
 
-
+    /**
+     * Method to retrieve all transactions of a user by email.
+     *
+     * @param email the email of the user
+     * @return a list of all transactions of the user
+     */
     public List<Transaction> getAllTransactionsByUser(String email) {
         return this.transactionRepository.findAllByUserEmail(email);
     }

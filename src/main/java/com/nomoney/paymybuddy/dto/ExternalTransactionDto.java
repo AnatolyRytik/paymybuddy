@@ -6,6 +6,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+/**
+ * The class ExternalTransactionDto is used for transfering funds to or from external bank account.
+ *
+ * @param amountToAdd      the amount to be added to the account
+ * @param amountToWithdraw the amount to be withdrawn from the account
+ * @param userEmail        the email of the user making the transaction
+ * @param userIban         the IBAN number of the user making the transaction
+ */
 @Data
 public class ExternalTransactionDto {
 

@@ -18,6 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * The InternalTransactionController class is a Spring MVC @Controller that handles internal transactions between users.
+ * <p>
+ * It uses the TransactionService, ContactService and UserService classes to handle logic related to transactions and users.
+ */
 @Controller
 public class InternalTransactionController {
 
@@ -31,6 +36,14 @@ public class InternalTransactionController {
         this.userService = userService;
     }
 
+    /**
+     * Handles GET requests to the "/internalTransaction" endpoint. Retrieves all the internal transactions for the currently logged in user,
+     * the contacts for the currently logged in user and the user's balance. Adds them to the model for displaying on the internal transaction page.
+     *
+     * @param model       the model object to hold the data for the view.
+     * @param userDetails an instance of {@link UserDetails} containing the current user's information.
+     * @return the name of the internal transaction page.
+     */
     @GetMapping("/internalTransaction")
     public String internalTransactionPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("transactions", transactionService.getAllTransactionsByUser(userDetails.getUsername()));
@@ -41,6 +54,15 @@ public class InternalTransactionController {
         return "internaltransaction";
     }
 
+    /**
+     * Handles POST requests to the "/internalBalanceOperation" endpoint. Creates a new internal transaction using the data from the
+     * {@link InternalTransactionDto} object passed in as a parameter.
+     *
+     * @param internalTransactionDto an instance of {@link InternalTransactionDto} containing the data for the new transaction.
+     * @param userDetails            an instance of {@link UserDetails} containing the current user's information.
+     * @param redirectAttributes     an instance of {@link RedirectAttributes} used to store the error messages in case of any exception.
+     * @return redirect to the internalTransaction page.
+     */
     @PostMapping("/internalBalanceOperation")
     public String createInternalTransaction(@ModelAttribute InternalTransactionDto internalTransactionDto, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
         try {

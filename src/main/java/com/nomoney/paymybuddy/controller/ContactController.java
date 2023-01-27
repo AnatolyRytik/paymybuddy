@@ -16,6 +16,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * The ContactController class is a Spring MVC controller that handles web requests related to contact management.
+ * <p>
+ * Constructs an instance of ContactController with the given ContactService.
+ *
+ * @param contactService the service for retrieving and manipulating contact information
+ */
 @Controller
 public class ContactController {
 
@@ -25,12 +32,28 @@ public class ContactController {
         this.contactService = contactService;
     }
 
+    /**
+     * Handles GET requests to the "/contact" endpoint. Retrieves the contacts for the currently logged in user
+     * and adds them to the model.
+     *
+     * @param model       the model to add the contacts to
+     * @param userDetails the UserDetails object for the currently logged in user
+     * @return the view name "contact"
+     */
     @GetMapping("/contact")
     public String relation(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("contacts", contactService.getContacts(userDetails.getUsername()));
         return "contact";
     }
 
+    /**
+     * Handles POST requests to the "/addConnection" endpoint. Attempts to add a friend to the currently logged in user's contacts.
+     *
+     * @param email              the email address of the friend to add
+     * @param userDetails        the UserDetails object for the currently logged in user
+     * @param redirectAttributes the RedirectAttributes object to pass flash attributes to the redirect destination
+     * @return the view name "redirect:/contact"
+     */
     @PostMapping("/addConnection")
     public String addFriend(@RequestParam String email,
                             @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {

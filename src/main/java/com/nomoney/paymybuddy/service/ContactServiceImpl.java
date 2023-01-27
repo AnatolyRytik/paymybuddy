@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class that handles all Contact related business logic.
+ */
 @Service
 public class ContactServiceImpl implements ContactService {
     private final UserRepository userRepository;
@@ -22,6 +25,14 @@ public class ContactServiceImpl implements ContactService {
         this.contactRepository = contactRepository;
     }
 
+    /**
+     * Adds a new friend to the user's contact list.
+     *
+     * @param contactFormDto form data for the new contact, including the user's email and friend's email
+     * @return the contact form data
+     * @throws DataAlreadyExistException if a contact between the two users already exists
+     * @throws NotFoundException         if the user or friend could not be found in the database
+     */
     @Override
     public ContactFormDto addFriend(ContactFormDto contactFormDto) {
         Optional<User> user = userRepository.findByEmail(contactFormDto.getUserEmail());
@@ -37,18 +48,15 @@ public class ContactServiceImpl implements ContactService {
         return contactFormDto;
     }
 
+    /**
+     * Retrieves the contacts for a specific user.
+     *
+     * @param userEmail the email of the user whose contacts are to be retrieved
+     * @return a list of the user's contacts
+     */
     @Override
     public List<Contact> getContacts(String userEmail) {
         return contactRepository.findAllByUserEmail(userEmail);
-    }
-
-    @Override
-    public Boolean deleteContact(Long id) {
-        if (contactRepository.existsById(id)) {
-            contactRepository.deleteById(id);
-            return true;
-        }
-        return false;
     }
 
 }

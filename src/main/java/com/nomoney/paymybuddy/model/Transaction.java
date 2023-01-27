@@ -10,6 +10,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import java.util.Date;
 
+/**
+ * This class represents a transaction. It extends the AbstractBaseEntity class and
+ * is annotated with @Entity and @Table to indicate that it is a JPA entity
+ * and is mapped to the 'transactions' table in the database.
+ *
+ * @see AbstractBaseEntity
+ */
 @Data
 @Entity
 @Table(name = "transactions")
@@ -28,6 +35,11 @@ public class Transaction extends AbstractBaseEntity {
 
     private Date time = new Date();
 
+    /**
+     * Creates a new Transaction object using the data from an ExternalTransactionDto object.
+     *
+     * @param externalTransactionDto The ExternalTransactionDto object containing the data for the new Transaction object.
+     */
     public Transaction(ExternalTransactionDto externalTransactionDto) {
         this.amount = externalTransactionDto.getAmountToWithdraw() == 0.0 ? externalTransactionDto.getAmountToAdd() : externalTransactionDto.getAmountToWithdraw();
         this.userEmail = externalTransactionDto.getUserEmail();
@@ -36,6 +48,11 @@ public class Transaction extends AbstractBaseEntity {
         this.time = new Date();
     }
 
+    /**
+     * Creates a new Transaction object using the data from an InternalTransactionDto object.
+     *
+     * @param internalTransactionDto The InternalTransactionDto object containing the data for the new Transaction object.
+     */
     public Transaction(InternalTransactionDto internalTransactionDto) {
         this.amount = internalTransactionDto.getAmount();
         this.userEmail = internalTransactionDto.getUserEmail();
