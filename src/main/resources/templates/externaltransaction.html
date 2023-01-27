@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Pay My Buddy</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}" type="text/css"/>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button aria-controls="navbar" aria-expanded="false"
+                    class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse"
+                    type="button">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">PayMyBuddy</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a
+                        th:href="@{/contact}">Contact List</a></li>
+                <li sec:authorize="isAuthenticated()"><a
+                        th:href="@{/externalTransaction}">External Transfer</a></li>
+                <li sec:authorize="isAuthenticated()"><a
+                        th:href="@{/internalTransaction}">Internal Transfer</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<main>
+    <div class="container-page">
+        <div class="container">
+            <br>
+            <div>
+                <h5>Top Up Your Balance Or Withdraw Money To Bank Account</h5>
+            </div>
+            <h>Current Account Balance = <span th:text="${balance}"></span></h>
+            <div class="container">
+                <form method="POST" th:action="@{/externalBalanceOperation}" th:object="${externalTransaction}">
+                    <br>
+                    <div class="form-group">
+                        <input id="iban" maxlength="60" name="userIban" placeholder="IBAN"
+                               required="true" th:text="${externalTransaction.userIban}" type="text"/> <br/>
+                    </div>
+                    <br>
+                    <h>Amount To Top Up Your Balance</h>
+                    <div class="form-group">
+                        <input class="form-control" min="0" placeholder="amount to withdraw"
+                               th:field="${externalTransaction.amountToAdd}" type="number">
+                    </div>
+                    <br>
+                    <h>Amount To Withdraw To Your Bank Account</h>
+                    <br>
+                    <div class="form-group">
+                        <input class="form-control" min="0" placeholder="amount to withdraw"
+                               th:field="${externalTransaction.amountToWithdraw}" type="number">
+                    </div>
+                    <br>
+                    <input class="withdraw" type="submit" value="Submit"/>
+                </form>
+                <span style="font-size: 1em; color: #FF1C19;" th:each="error : ${errors}" th:text="${error}"></span>
+            </div>
+            <br>
+            <h3 class="title-relation">My Transactions</h3>
+            <br>
+            <div class="container-table">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Connection</th>
+                        <th scope="col">Iban</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="transaction : ${transactions}">
+                        <td th:text="${transaction.emailRecipient}"></td>
+                        <td th:text="${transaction.userIban}"></td>
+                        <td th:text="${transaction.amount}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/actions.js}" type="text/javascript"></script>
+</footer>
+</body>
+</html>
