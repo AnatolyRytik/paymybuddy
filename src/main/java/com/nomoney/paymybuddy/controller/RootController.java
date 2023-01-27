@@ -1,6 +1,7 @@
 package com.nomoney.paymybuddy.controller;
 
 import com.nomoney.paymybuddy.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * RootController class is a Spring MVC controller responsible for handling user login requests.
  */
+@Slf4j
 @Controller
 public class RootController {
 
@@ -26,6 +28,7 @@ public class RootController {
      */
     @GetMapping("/login")
     public String login() {
+        log.debug("Handling GET request for the /login path.");
         return "login";
     }
 }

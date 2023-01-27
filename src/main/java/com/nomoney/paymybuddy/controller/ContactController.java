@@ -5,6 +5,7 @@ import com.nomoney.paymybuddy.service.ContactService;
 import com.nomoney.paymybuddy.util.exception.NotEnoughMoneyException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
 import com.nomoney.paymybuddy.util.exception.OperationNotAllowedException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import java.util.List;
  *
  * @param contactService the service for retrieving and manipulating contact information
  */
+@Slf4j
 @Controller
 public class ContactController {
 
@@ -42,6 +44,7 @@ public class ContactController {
      */
     @GetMapping("/contact")
     public String relation(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        log.debug("Getting contacts for user: {}", userDetails.getUsername());
         model.addAttribute("contacts", contactService.getContacts(userDetails.getUsername()));
         return "contact";
     }
@@ -60,7 +63,9 @@ public class ContactController {
         try {
             ContactFormDto contactFormDto = new ContactFormDto(userDetails.getUsername(), email);
             contactService.addFriend(contactFormDto);
+            log.debug("Friend added: {}", email);
         } catch (NotFoundException | OperationNotAllowedException | NotEnoughMoneyException e) {
+            log.error("Error adding friend: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("errors", List.of(e.getMessage()));
         }
         return "redirect:/contact";
