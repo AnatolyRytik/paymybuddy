@@ -6,10 +6,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/user")
 public class ContactController {
 
     private final ContactService contactService;
@@ -24,17 +25,17 @@ public class ContactController {
         return "contact";
     }
 
-    @PostMapping("/addContact")
-    public String addFriend(@ModelAttribute("friend") ContactFormDto contactFormDto,
+    @PostMapping("/addConnection")
+    public String addFriend(@RequestParam String email,
                             @AuthenticationPrincipal UserDetails userDetails) {
-        contactFormDto.setUserEmail(userDetails.getUsername());
+        ContactFormDto contactFormDto = new ContactFormDto(userDetails.getUsername(), email);
         contactService.addFriend(contactFormDto);
-        return "redirect:/user/contact?success";
+        return "redirect:/contact";
     }
-
-    @PostMapping("/contact")
+/*
+    @DeleteMapping("/contact")
     public String deleteContact(@RequestParam Long id) {
         contactService.deleteContact(id);
         return "redirect:/user/contact";
-    }
+    }*/
 }

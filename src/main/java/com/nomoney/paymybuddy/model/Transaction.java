@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
@@ -17,7 +16,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class Transaction extends AbstractBaseEntity {
 
-    @NotBlank
     private double amount;
 
     @Email
@@ -31,7 +29,7 @@ public class Transaction extends AbstractBaseEntity {
     private Date time = new Date();
 
     public Transaction(ExternalTransactionDto externalTransactionDto) {
-        this.amount = externalTransactionDto.getAmount();
+        this.amount = externalTransactionDto.getAmountToWithdraw() == 0.0 ? externalTransactionDto.getAmountToAdd() : externalTransactionDto.getAmountToWithdraw();
         this.userEmail = externalTransactionDto.getUserEmail();
         this.userIban = externalTransactionDto.getUserIban();
         this.emailRecipient = "";
