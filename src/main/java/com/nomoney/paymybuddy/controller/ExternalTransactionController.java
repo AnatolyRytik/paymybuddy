@@ -2,25 +2,29 @@ package com.nomoney.paymybuddy.controller;
 
 import com.nomoney.paymybuddy.dto.ExternalTransactionDto;
 import com.nomoney.paymybuddy.service.TransactionService;
+import com.nomoney.paymybuddy.service.UserService;
 import com.nomoney.paymybuddy.util.exception.NotEnoughMoneyException;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
 public class ExternalTransactionController {
 
     private final TransactionService transactionService;
+    private final UserService userService;
 
-    public ExternalTransactionController(TransactionService transactionService) {
+    public ExternalTransactionController(TransactionService transactionService, UserService userService) {
         this.transactionService = transactionService;
+        this.userService = userService;
     }
 
     @GetMapping("/externalTransaction")
@@ -28,10 +32,11 @@ public class ExternalTransactionController {
         model.addAttribute("transactions", transactionService.getAllTransactionsByUser(userDetails.getUsername()));
         model.addAttribute("externalTransaction", new ExternalTransactionDto());
         model.addAttribute("user", userDetails.getUsername());
-        return "externalTransaction";
+        model.addAttribute("balance", userService.getUserByEmail(userDetails.getUsername()).getBalance());
+        return "externaltransaction";
     }
 
-    @PostMapping("/externalTransaction/balanceOperation")
+    @PostMapping("/externalBalanceOperation")
     public String withdrawToBankAccount(@ModelAttribute ExternalTransactionDto externalTransactionDto, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
         try {
             externalTransactionDto.setUserEmail(userDetails.getUsername());
@@ -39,7 +44,7 @@ public class ExternalTransactionController {
         } catch (NotFoundException | NotEnoughMoneyException e) {
             redirectAttributes.addFlashAttribute("errors", List.of(e.getMessage()));
         }
-        return "redirect:/user/externalTransaction";
+        return "redirect:/externalTransaction";
 
     }
 }

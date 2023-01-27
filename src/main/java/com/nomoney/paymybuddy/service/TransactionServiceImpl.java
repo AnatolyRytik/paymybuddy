@@ -39,7 +39,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = new Transaction(internalTransactionDto);
 
         if (user.getBalance() >= amount) {
-            user.setBalance(user.getBalance() - (amount * FEE));
+            user.setBalance(user.getBalance() - amount - (amount * FEE));
             recipient.setBalance(recipient.getBalance() + amount);
             userRepository.save(user);
             userRepository.save(recipient);
@@ -53,16 +53,18 @@ public class TransactionServiceImpl implements TransactionService {
         User user = userRepository.findByEmail(externalTransactionDto.getUserEmail())
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
-        Transaction transaction = new Transaction(externalTransactionDto);
+        Transaction transaction;
 
-        if(externalTransactionDto.getAmountToAdd()>0.0){
-            return addMoney(user,externalTransactionDto.getAmountToAdd(),transaction);
-        }else if(externalTransactionDto.getAmountToWithdraw()>0.0){
-            return withdrawMoney(user,externalTransactionDto.getAmountToWithdraw(),transaction);
+        if (externalTransactionDto.getAmountToAdd() > 0.0 && externalTransactionDto.getAmountToWithdraw() == 0.0) {
+            transaction = new Transaction(externalTransactionDto);
+            return addMoney(user, externalTransactionDto.getAmountToAdd(), transaction);
+        } else if (externalTransactionDto.getAmountToWithdraw() > 0.0 && externalTransactionDto.getAmountToAdd() == 0.0) {
+            transaction = new Transaction(externalTransactionDto);
+            return withdrawMoney(user, externalTransactionDto.getAmountToWithdraw(), transaction);
         } else throw new OperationNotAllowedException("This operation is not allowed");
     }
 
-    private Transaction withdrawMoney (User user, double amount, Transaction transaction){
+    private Transaction withdrawMoney(User user, double amount, Transaction transaction) {
         if (user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
             userRepository.save(user);
@@ -70,10 +72,10 @@ public class TransactionServiceImpl implements TransactionService {
         } else throw new NotEnoughMoneyException("Not enough money");
     }
 
-    private Transaction addMoney (User user, double amount, Transaction transaction){
-            user.setBalance(user.getBalance() + amount);
-            userRepository.save(user);
-            return transactionRepository.save(transaction);
+    private Transaction addMoney(User user, double amount, Transaction transaction) {
+        user.setBalance(user.getBalance() + amount);
+        userRepository.save(user);
+        return transactionRepository.save(transaction);
     }
 
 
