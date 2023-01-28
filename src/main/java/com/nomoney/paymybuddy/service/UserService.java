@@ -28,4 +28,12 @@ public interface UserService extends UserDetailsService {
      * @return the user with the given email
      */
     User getUserByEmail(String email);
+
+    /**
+     * Method to retrieve a user balance by email.
+     *
+     * @param email the email of the user to retrieve
+     * @return the balance in double value
+     */
+    Double getUserAccountBalance(String email);
 }

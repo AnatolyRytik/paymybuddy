@@ -71,4 +71,16 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User data not found"));
     }
+
+    /**
+     * Returns the user with the given email
+     *
+     * @param email email of the user
+     * @return the account balance
+     * @throws NotFoundException if the user with the given email could not be found
+     */
+    @Override
+    public Double getUserAccountBalance(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User data not found")).getBalance();
+    }
 }
