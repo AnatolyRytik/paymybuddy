@@ -49,7 +49,7 @@ public class ExternalTransactionController {
         model.addAttribute("transactions", transactionService.getAllTransactionsByUser(userDetails.getUsername()));
         model.addAttribute("externalTransaction", new ExternalTransactionDto());
         model.addAttribute("user", userDetails.getUsername());
-        model.addAttribute("balance", userService.getUserByEmail(userDetails.getUsername()).getBalance());
+        model.addAttribute("balance", userService.getUserAccountBalance(userDetails.getUsername()));
         return "externaltransaction";
     }
 
