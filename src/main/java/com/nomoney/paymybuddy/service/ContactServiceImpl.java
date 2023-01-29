@@ -65,7 +65,14 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<Contact> getContacts(String userEmail) {
         log.debug("Retrieving contacts for user with email {}", userEmail);
-        return contactRepository.findAllByUserEmail(userEmail);
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        if (user.isPresent()) {
+            log.debug("Friend list successfully found");
+            return contactRepository.findAllByUserEmail(userEmail);
+        } else {
+            log.error("User not found");
+            throw new NotFoundException("User not found");
+        }
     }
 
 }
