@@ -52,8 +52,7 @@ public class InternalTransactionController {
         model.addAttribute("transactions", transactionService.getAllTransactionsByUser(userDetails.getUsername()));
         model.addAttribute("internalTransaction", new InternalTransactionDto());
         model.addAttribute("contacts", contactService.getContacts(userDetails.getUsername()));
-        model.addAttribute("balance", userService.getUserByEmail(userDetails.getUsername()).getBalance());
-
+        model.addAttribute("balance", userService.getUserAccountBalance(userDetails.getUsername()));
         return "internaltransaction";
     }
 
