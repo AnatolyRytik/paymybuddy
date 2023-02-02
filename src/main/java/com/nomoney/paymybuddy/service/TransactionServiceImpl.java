@@ -61,7 +61,7 @@ public class TransactionServiceImpl implements TransactionService {
             userRepository.save(recipient);
             log.debug("Transaction created: {}", transaction);
             return transactionRepository.save(transaction);
-        } else{
+        } else {
             log.error("Not enough money");
             throw new NotEnoughMoneyException("Not enough money");
         }
@@ -90,7 +90,7 @@ public class TransactionServiceImpl implements TransactionService {
         } else if (externalTransactionDto.getAmountToWithdraw() > 0.0 && externalTransactionDto.getAmountToAdd() == 0.0) {
             transaction = new Transaction(externalTransactionDto);
             return withdrawMoney(user, externalTransactionDto.getAmountToWithdraw(), transaction);
-        } else{
+        } else {
             log.error("This operation is not allowed");
             throw new OperationNotAllowedException("This operation is not allowed");
         }
@@ -110,7 +110,7 @@ public class TransactionServiceImpl implements TransactionService {
             user.setBalance(user.getBalance() - amount);
             userRepository.save(user);
             return transactionRepository.save(transaction);
-        } else{
+        } else {
             log.error("Not enough money");
             throw new NotEnoughMoneyException("Not enough money");
         }
