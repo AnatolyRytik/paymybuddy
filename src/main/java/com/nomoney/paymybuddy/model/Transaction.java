@@ -5,6 +5,7 @@ import com.nomoney.paymybuddy.dto.InternalTransactionDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -26,13 +27,17 @@ public class Transaction extends AbstractBaseEntity {
     private double amount;
 
     @Email
+    @Column(name = "user_email")
     private String userEmail;
 
     @Email
+    @Column(name = "email_recipient")
     private String emailRecipient;
 
+    @Column(name = "user_iban")
     private String userIban;
 
+    @Column(name = "date_time")
     private Date time = new Date();
 
     /**

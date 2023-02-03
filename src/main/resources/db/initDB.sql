@@ -10,32 +10,32 @@ create sequence global_seq start with 100000;
 
 create TABLE IF NOT EXISTS users
 (
-    id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    id               BIGINT PRIMARY KEY DEFAULT nextval('global_seq'),
     firstname        VARCHAR                           NOT NULL,
     lastname         VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
-    balance          NUMERIC(20,2)                 DEFAULT 0.00,
+    balance          DOUBLE PRECISION                 DEFAULT 0.00,
     registered       TIMESTAMP                   DEFAULT now()
 );
 create unique index users_unique_email_idx on users (email);
 
 create TABLE IF NOT EXISTS connections
 (
-     id                      INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
-     user_id                 INTEGER    NOT NULL,
-     friend_id               INTEGER    NOT NULL,
+     id                      BIGINT    PRIMARY KEY DEFAULT nextval('global_seq'),
+     user_id                 BIGINT    NOT NULL,
+     friend_id               BIGINT    NOT NULL,
      FOREIGN KEY (user_id) REFERENCES users(id) ON delete CASCADE,
 	 FOREIGN KEY (friend_id) REFERENCES users(id) ON delete CASCADE
 );
 
 create TABLE IF NOT EXISTS transactions
 (
-    id                  INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    id                  BIGINT PRIMARY KEY DEFAULT nextval('global_seq'),
     user_email          VARCHAR                                  NOT NULL,
     date_time           TIMESTAMP                           DEFAULT now(),
-    amount              NUMERIC(10,2)                            NOT NULL,
-    userIban            VARCHAR                                  ,
+    amount              DOUBLE PRECISION                         NOT NULL,
+    user_iban            VARCHAR                                  ,
     email_recipient     VARCHAR                                  ,
     FOREIGN KEY (user_email) REFERENCES users (email) ON delete CASCADE
 );
