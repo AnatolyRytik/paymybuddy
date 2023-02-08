@@ -2,6 +2,7 @@ package com.nomoney.paymybuddy.controller;
 
 
 import com.nomoney.paymybuddy.service.ContactService;
+import com.nomoney.paymybuddy.service.UserService;
 import com.nomoney.paymybuddy.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ class ContactControllerTest {
 
     @MockBean
     private ContactService contactService;
+
+    @MockBean
+    private UserService userService;
 
     @Test
     @WithMockUser

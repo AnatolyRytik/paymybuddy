@@ -70,6 +70,7 @@ public class RegistrationController {
         } catch (NotFoundException | DataAlreadyExistException e) {
             log.error("Error while registering user: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("errors", List.of(e.getMessage()));
+            return "redirect:/registration";
         }
         return "redirect:/login";
     }

@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * RootController class is a Spring MVC controller responsible for handling user login requests.
  */
 @Slf4j
 @Controller
+@RequestMapping("/login")
 public class RootController {
 
     private final UserService userService;
@@ -26,7 +28,7 @@ public class RootController {
      *
      * @return the login view.
      */
-    @GetMapping("/login")
+    @GetMapping
     public String login() {
         log.debug("Handling GET request for the /login path.");
         return "login";
