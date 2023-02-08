@@ -56,6 +56,7 @@ class InternalTransactionControllerTest {
     void externalTransaction_shouldReturnTemplateWithExpectedAttributes() throws Exception {
         InternalTransactionDto internalTransactionDto = new InternalTransactionDto();
         internalTransactionDto.setAmount(100.0);
+        internalTransactionDto.setDescription("taxi");
         internalTransactionDto.setEmailRecipient("emailrecipient@example.com");
         internalTransactionDto.setUserEmail("user@example.com");
 
@@ -71,6 +72,7 @@ class InternalTransactionControllerTest {
     void externalTransaction_shouldReturnError() throws Exception {
         InternalTransactionDto internalTransactionDto = new InternalTransactionDto();
         internalTransactionDto.setAmount(100.0);
+        internalTransactionDto.setDescription("taxi");
         internalTransactionDto.setEmailRecipient("emailrecipient@example.com");
         internalTransactionDto.setUserEmail("user@example.com");
         doThrow(new NotFoundException("Error message")).when(transactionService).createInternalTransaction(any());

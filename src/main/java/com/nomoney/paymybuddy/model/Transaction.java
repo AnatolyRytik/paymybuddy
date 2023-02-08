@@ -37,6 +37,9 @@ public class Transaction extends AbstractBaseEntity {
     @Column(name = "user_iban")
     private String userIban;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "date_time")
     private Date time = new Date();
 
@@ -49,6 +52,7 @@ public class Transaction extends AbstractBaseEntity {
         this.amount = externalTransactionDto.getAmountToWithdraw() == 0.0 ? externalTransactionDto.getAmountToAdd() : externalTransactionDto.getAmountToWithdraw();
         this.userEmail = externalTransactionDto.getUserEmail();
         this.userIban = externalTransactionDto.getUserIban();
+        this.description = externalTransactionDto.getDescription();
         this.emailRecipient = "";
         this.time = new Date();
     }
@@ -62,6 +66,7 @@ public class Transaction extends AbstractBaseEntity {
         this.amount = internalTransactionDto.getAmount();
         this.userEmail = internalTransactionDto.getUserEmail();
         this.emailRecipient = internalTransactionDto.getEmailRecipient();
+        this.description = internalTransactionDto.getDescription();
         this.userIban = "";
         this.time = new Date();
     }

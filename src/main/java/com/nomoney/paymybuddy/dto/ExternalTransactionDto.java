@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
  * @param amountToWithdraw the amount to be withdrawn from the account
  * @param userEmail        the email of the user making the transaction
  * @param userIban         the IBAN number of the user making the transaction
+ * @param description      the description of the transaction
  */
 @Data
 public class ExternalTransactionDto {
@@ -28,5 +29,8 @@ public class ExternalTransactionDto {
 
     @NotBlank
     private String userIban;
+
+    @NotBlank
+    private String description;
 
 }

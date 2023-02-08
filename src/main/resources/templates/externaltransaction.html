@@ -48,21 +48,28 @@
             <div class="container">
                 <form method="POST" th:action="@{/externalBalanceOperation}" th:object="${externalTransaction}">
                     <br>
+                    <h>Iban</h>
                     <div class="form-group">
                         <input id="iban" maxlength="60" name="userIban" placeholder="IBAN"
                                required="true" th:text="${externalTransaction.userIban}" type="text"/> <br/>
                     </div>
                     <br>
+                    <h>Description Of Your Payment</h>
+                    <div class="form-group">
+                        <input id="description" maxlength="60" name="description" placeholder="description"
+                               required="true" th:text="${externalTransaction.description}" type="text"/> <br/>
+                    </div>
+                    <br>
                     <h>Amount To Top Up Your Balance</h>
                     <div class="form-group">
-                        <input class="form-control" min="0" placeholder="amount to withdraw"
+                        <input id="amounttoadd" min="0" placeholder="amount to add"
                                th:field="${externalTransaction.amountToAdd}" type="number">
                     </div>
                     <br>
                     <h>Amount To Withdraw To Your Bank Account</h>
                     <br>
                     <div class="form-group">
-                        <input class="form-control" min="0" placeholder="amount to withdraw"
+                        <input id="amounttowithdraw" min="0" placeholder="amount to withdraw"
                                th:field="${externalTransaction.amountToWithdraw}" type="number">
                     </div>
                     <br>
@@ -79,6 +86,7 @@
                     <tr>
                         <th scope="col">Connection</th>
                         <th scope="col">Iban</th>
+                        <th scope="col">Description</th>
                         <th scope="col">Amount</th>
                     </tr>
                     </thead>
@@ -86,6 +94,7 @@
                     <tr th:each="transaction : ${transactions}">
                         <td th:text="${transaction.emailRecipient}"></td>
                         <td th:text="${transaction.userIban}"></td>
+                        <td th:text="${transaction.description}"></td>
                         <td th:text="${transaction.amount}"></td>
                     </tr>
                     </tbody>
