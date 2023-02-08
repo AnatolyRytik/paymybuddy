@@ -54,6 +54,7 @@ public class ExternalTransactionControllerTest {
         externalTransactionDto.setAmountToAdd(100.0);
         externalTransactionDto.setUserIban("JDKJKQS39A0");
         externalTransactionDto.setUserEmail("user@example.com");
+        externalTransactionDto.setDescription("taxi");
 
         mockMvc.perform(post("/externalBalanceOperation")
                         .with(csrf())
@@ -69,6 +70,7 @@ public class ExternalTransactionControllerTest {
         externalTransactionDto.setAmountToAdd(100.0);
         externalTransactionDto.setUserIban("JDKJKQS39A0");
         externalTransactionDto.setUserEmail("user@example.com");
+        externalTransactionDto.setDescription("taxi");
         doThrow(new NotFoundException("Error message")).when(transactionService).setMoneyAvailable(any());
         mockMvc.perform(post("/externalBalanceOperation")
                         .with(csrf())

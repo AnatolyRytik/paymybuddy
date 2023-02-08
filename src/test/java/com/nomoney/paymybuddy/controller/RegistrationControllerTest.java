@@ -53,7 +53,7 @@ class RegistrationControllerTest {
                         .with(csrf())
                         .flashAttr("user", userRegistrationDto))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/registration"));
+                .andExpect(view().name("redirect:/login"));
     }
 
     @Test

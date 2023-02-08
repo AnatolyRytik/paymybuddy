@@ -59,6 +59,11 @@
                            th:field="*{amount}" type="number">
                 </div>
                 <br>
+                <div class="input-group">
+                    <input class="form-control" maxlength="60" placeholder="Description" required="true"
+                           th:field="*{description}" type="text">
+                </div>
+                <br>
                 <input class="pay" type="submit" value="Pay"/>
 
             </form>
@@ -74,6 +79,7 @@
                     <th scope="col">Connection</th>
                     <th scope="col">Iban</th>
                     <th scope="col">Amount</th>
+                    <th scope="col">Description</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,6 +87,7 @@
                     <td th:text="${transaction.emailRecipient}"></td>
                     <td th:text="${transaction.userIban}"></td>
                     <td th:text="${transaction.amount}"></td>
+                    <td th:text="${transaction.description}"></td>
                 </tr>
                 </tbody>
             </table>

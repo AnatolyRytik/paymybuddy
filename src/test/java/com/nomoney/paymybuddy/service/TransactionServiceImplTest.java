@@ -89,6 +89,7 @@ class TransactionServiceImplTest {
 
         user.setBalance(10.0);
         internalTransactionDto.setAmount(20.0);
+        internalTransactionDto.setDescription("taxi");
 
         //WHEN
         when(userRepository.findByEmail(internalTransactionDto.getUserEmail())).thenReturn(Optional.of(user));
@@ -107,6 +108,7 @@ class TransactionServiceImplTest {
         internalTransactionDto.setAmount(100.0);
         internalTransactionDto.setUserEmail("test@test.com");
         internalTransactionDto.setEmailRecipient("recipient@test.com");
+        internalTransactionDto.setDescription("taxi");
 
         //WHEN
         User user = new User();
@@ -137,7 +139,7 @@ class TransactionServiceImplTest {
         ExternalTransactionDto externalTransactionDto = new ExternalTransactionDto();
         externalTransactionDto.setUserEmail("email@example.com");
         externalTransactionDto.setAmountToAdd(50.0);
-        externalTransactionDto.setAmountToWithdraw(0.0);
+        externalTransactionDto.setDescription("taxi");
 
         //WHEN
         when(userRepository.findByEmail("email@example.com")).thenReturn(Optional.of(user));
@@ -153,7 +155,7 @@ class TransactionServiceImplTest {
         ExternalTransactionDto externalTransactionDto = new ExternalTransactionDto();
         externalTransactionDto.setUserEmail("email@example.com");
         externalTransactionDto.setAmountToAdd(50.0);
-        externalTransactionDto.setAmountToWithdraw(0.0);
+        externalTransactionDto.setDescription("taxi");
 
         //WHEN
         when(userRepository.findByEmail("email@example.com")).thenReturn(Optional.empty());
@@ -171,8 +173,8 @@ class TransactionServiceImplTest {
 
         ExternalTransactionDto externalTransactionDto = new ExternalTransactionDto();
         externalTransactionDto.setUserEmail("email@example.com");
-        externalTransactionDto.setAmountToAdd(0.0);
         externalTransactionDto.setAmountToWithdraw(50.0);
+        externalTransactionDto.setDescription("taxi");
 
         //WHEN
         when(userRepository.findByEmail("email@example.com")).thenReturn(Optional.of(user));
@@ -187,8 +189,8 @@ class TransactionServiceImplTest {
         //GIVEN
         ExternalTransactionDto externalTransactionDto = new ExternalTransactionDto();
         externalTransactionDto.setUserEmail("email@example.com");
-        externalTransactionDto.setAmountToAdd(0.0);
         externalTransactionDto.setAmountToWithdraw(50.0);
+        externalTransactionDto.setDescription("taxi");
 
         //WHEN
         when(userRepository.findByEmail("email@example.com")).thenReturn(Optional.empty());
@@ -196,7 +198,6 @@ class TransactionServiceImplTest {
         //THEN
         assertThrows(NotFoundException.class, () -> {
             transactionService.setMoneyAvailable(externalTransactionDto);
-            ;
         });
     }
 
@@ -208,11 +209,13 @@ class TransactionServiceImplTest {
         internalTransactionDto.setAmount(100.0);
         internalTransactionDto.setUserEmail(email);
         internalTransactionDto.setEmailRecipient("recipient@test.com");
+        internalTransactionDto.setDescription("taxi");
 
         InternalTransactionDto internalTransactionDto2 = new InternalTransactionDto();
         internalTransactionDto.setAmount(100.0);
         internalTransactionDto.setUserEmail(email);
         internalTransactionDto.setEmailRecipient("recipient2@test.com");
+        internalTransactionDto.setDescription("taxi");
         Transaction transaction1 = new Transaction(internalTransactionDto);
         Transaction transaction2 = new Transaction(internalTransactionDto2);
         List<Transaction> expectedTransactions = Arrays.asList(transaction1, transaction2);
