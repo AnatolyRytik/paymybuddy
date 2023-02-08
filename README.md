@@ -41,7 +41,7 @@ cd "your_project_directory"
 - Create a PostgreSQL database named "payme"
 
 ```
-CREATE DATABASE user_transactions_db;
+CREATE DATABASE payme;
 ```
 
 - run the project's SQL script that is located in: src / main / resources / db / initDB.sql
