@@ -54,7 +54,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = new Transaction(internalTransactionDto);
 
-        if (user.getBalance() >= amount) {
+        if (user.getBalance() >= amount + (amount * FEE)) {
             user.setBalance(user.getBalance() - amount - (amount * FEE));
             recipient.setBalance(recipient.getBalance() + amount);
             userRepository.save(user);
