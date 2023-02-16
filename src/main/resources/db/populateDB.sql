@@ -1,6 +1,7 @@
 delete from users;
 delete from transactions;
 delete from connections;
+ALTER SEQUENCE global_seq RESTART WITH 1000;
 
 insert into users (firstName, lastName, email, password, balance)
 values ('Thomas', 'Toto', 'thomas@gmail.com', '$2a$10$bok3TkG4I7lys7D8Ut50YeIQsoBn1jb.Izq6K8enzbOog1mDz8sze', 5000.0),

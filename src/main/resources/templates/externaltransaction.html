@@ -63,14 +63,14 @@
                     <h>Amount To Top Up Your Balance</h>
                     <div class="form-group">
                         <input id="amounttoadd" min="0" placeholder="amount to add"
-                               th:field="${externalTransaction.amountToAdd}" type="number">
+                               th:field="${externalTransaction.amountToAdd}" type="number" step="0.001">
                     </div>
                     <br>
                     <h>Amount To Withdraw To Your Bank Account</h>
                     <br>
                     <div class="form-group">
                         <input id="amounttowithdraw" min="0" placeholder="amount to withdraw"
-                               th:field="${externalTransaction.amountToWithdraw}" type="number">
+                               th:field="${externalTransaction.amountToWithdraw}" type="number" step="0.001">
                     </div>
                     <br>
                     <input class="withdraw" type="submit" value="Submit"/>
